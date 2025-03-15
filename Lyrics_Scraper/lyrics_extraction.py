@@ -9,6 +9,9 @@ from tqdm import tqdm
 LOG_FILE = "lyrics_extraction.log"
 logging.basicConfig(filename=LOG_FILE, level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
+# Fixed number of threads
+NUM_THREADS = 4
+
 # Function to fetch lyrics
 def get_lyrics_lyricsovh(song, artist):
     """Fetch lyrics using Lyrics.ovh API."""
@@ -43,17 +46,18 @@ def process_batch(batch_file, output_folder):
     df.to_csv(output_file, index=False)
     return output_file
 
-# Function to split CSV into batch files
-def split_csv(input_file, batch_size, output_folder):
-    """Splits the input CSV into smaller batch CSV files."""
+# Function to split CSV into exactly 4 equal parts
+def split_csv(input_file, output_folder):
+    """Splits the input CSV into 4 equal batch CSV files."""
     df = pd.read_csv(input_file)
     os.makedirs(output_folder, exist_ok=True)
 
     batch_files = []
-    for i in range(0, len(df), batch_size):
-        batch_df = df.iloc[i:i+batch_size]
-        batch_file = os.path.join(output_folder, f"batch_{i//batch_size}.csv")
-        batch_df.to_csv(batch_file, index=False)
+    partitions = [df.iloc[i::NUM_THREADS] for i in range(NUM_THREADS)]  # Divide into 4 parts
+
+    for i, partition in enumerate(partitions):
+        batch_file = os.path.join(output_folder, f"batch_{i}.csv")
+        partition.to_csv(batch_file, index=False)
         batch_files.append(batch_file)
 
     return batch_files
@@ -69,19 +73,19 @@ def merge_batches(batch_folder, final_output):
     print(f"Final merged CSV saved at: {final_output}")
 
 # Main function
-def init_extraction(filepath, batch_size=1000, num_threads=4):
+def init_extraction(filepath):
     """Splits CSV, runs multi-threaded lyrics extraction, and merges results."""
     
     try:
-        # Step 1: Split CSV into batches
+        # Step 1: Split CSV into 4 equal parts
         batch_folder = "batches"
-        batch_files = split_csv(filepath, batch_size, batch_folder)
+        batch_files = split_csv(filepath, batch_folder)
 
         # Step 2: Process each batch in parallel
         output_folder = "processed_batches"
         os.makedirs(output_folder, exist_ok=True)
 
-        with ThreadPoolExecutor(max_workers=num_threads) as executor:
+        with ThreadPoolExecutor(max_workers=NUM_THREADS) as executor:
             processed_files = list(executor.map(lambda f: process_batch(f, output_folder), batch_files))
 
         # Step 3: Merge all processed batch files
@@ -104,8 +108,6 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Extract lyrics from a CSV file using multi-threading and batch processing.")
     parser.add_argument("file_path", type=str, help="Path to the CSV file containing songs")
-    parser.add_argument("--batch_size", type=int, default=1000, help="Size of each batch (default=1000)")
-    parser.add_argument("--threads", type=int, default=4, help="Number of threads to use (default=4)")
     
     args = parser.parse_args()
-    init_extraction(args.file_path, args.batch_size, args.threads)
+    init_extraction(args.file_path)
