@@ -31,7 +31,7 @@ cd lyrics-extractor
 
 ### **3️⃣ Run the Script**
 ```bash
-python lyrics_extractor.py "/path/to/your/csv_file.csv" --threads 4
+python lyrics_extractor.py "/path/to/your/csv_file.csv"
 ```
 - Replace `/path/to/your/csv_file.csv` with the actual path of your CSV file.
 - Use `--threads` to specify the number of **parallel threads** (default is `4`).
@@ -58,77 +58,3 @@ Your input **CSV file** must have the following columns:
 5. **Saves results to a new CSV file** and logs success & failure in `lyrics_extraction.log`.
 
 ---
-
-## **Output 📂**
-After running the script, you will get:
-1. **Final CSV Output:** `scraped_lyrics.csv`
-   ```csv
-   Song,Performer,Lyrics
-   Shape of You,Ed Sheeran,"The club isn't the best place to find a lover..."
-   Rolling in the Deep,Adele,NULL
-   Uptown Funk,Bruno Mars,"This hit, that ice cold..."
-   ```
-   - **NULL** → If lyrics are not found.
-
-2. **Log File:** `lyrics_extraction.log`
-   ```
-   2025-03-14 10:05:22 - INFO - SUCCESS: Lyrics found for 'Shape of You' by 'Ed Sheeran'
-   2025-03-14 10:05:23 - WARNING - FAILED: Lyrics not found for 'Rolling in the Deep' by 'Adele'
-   ```
-
----
-
-## **Customization ⚡**
-### **Modify the Number of Threads**
-By default, the script runs **4 parallel threads**. You can change it using:
-```bash
-python lyrics_extractor.py "/path/to/your/csv_file.csv" --threads 8
-```
-
-### **Change API Source**
-- Currently, it uses **Lyrics.ovh API**.
-- You can extend it to use **Musixmatch API** (requires API Key).
-
----
-
-## **Troubleshooting ❓**
-### **1️⃣ File Not Found Error**
-Make sure your file exists in the given path:
-```bash
-ls /path/to/your/csv_file.csv
-```
-
-### **2️⃣ Some Lyrics Are Not Found**
-- The song might not be available on **Lyrics.ovh API**.
-- Try **another API** like **Musixmatch**.
-
-### **3️⃣ Slow Performance**
-Increase the number of threads:
-```bash
-python lyrics_extractor.py "/path/to/your/csv_file.csv" --threads 8
-```
-
----
-
-## **Contributing 🤝**
-Feel free to **fork this repository** and submit a pull request if you want to:
-- Add support for more **lyrics APIs**.
-- Improve **performance** with batch processing.
-- Add **error handling enhancements**.
-
----
-
-## **License 📜**
-This project is licensed under the **MIT License**.
-
----
-
-### **📌 Author**
-👤 **Your Name**  
-📧 Contact: your.email@example.com  
-🔗 GitHub: [Your GitHub Profile](https://github.com/your-username)
-
----
-
-🚀 **Enjoy Faster Lyrics Extraction!** 🎶
-
