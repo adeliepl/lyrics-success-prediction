@@ -31,6 +31,9 @@ Kaggle dataset: https://www.kaggle.com/datasets/thedevastator/billboard-hot-100-
 
 ## How to Run the Project 
 
+## Reference 
+📌 [Can Song Lyrics Predict Hits?](https://cs.uwaterloo.ca/~browndg/CMMR15data/CMMR2015paper.pdf)  
+
 ## Contributors 
 - **Kush Ashesh Shah** - Research, NLP, Machine Learning
 - **Adelie Plumasseau** - Research, NLP, Machine Learning
