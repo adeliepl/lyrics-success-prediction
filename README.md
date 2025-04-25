@@ -34,7 +34,7 @@ Kaggle dataset: https://www.kaggle.com/datasets/thedevastator/billboard-hot-100-
 
 ## Contributors 
 - **Kush Ashesh Shah** - Research, NLP, Machine Learning, BE
-- **Adelie Plumasseau** - Research, NLP, Machine Learning
+- **Adelie Plumasseau** - Research, NLP, Machine Learning, PL
 - **Hardik Prakashbhai Shah** - Research, NLP, Machine Learning, FE
 - **Dhvanil Sanjay Shah** - Research, NLP, Machine Learning, BE
 
